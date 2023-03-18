@@ -25,7 +25,7 @@ import hashlib
 
 SF_PASS = os.environ.get("SF_PASS")
 
-android_version_text = "thirteen"
+android_version_text = "13"
 
 try:
     new_tags = open("new_tags.txt", "r").readlines()
@@ -58,7 +58,7 @@ for tag in new_tags:
         print (ROM_HASH , ROM_NAME)
         # If Size>2GB
         print ("Combining bigger files to one ")
-        os.system("cat PixelOS.part?? > " + ROM_NAME)
+        os.system("cat BananaDroid.part?? > " + ROM_NAME)
 
         try: 
             with open(ROM_NAME, 'rb') as file_to_check:
@@ -101,10 +101,10 @@ for tag in new_tags:
         if file.endswith(".json"):
             device = file.replace(".json", "")
             if not BIG_ROM_FILE:
-                github_download_link = "https://github.com/PixelOS-Releases/releases-public/releases/download/" + str(datetime.date.today()) + "/" + ROM_ZIP_NAME
+                github_download_link = "https://github.com/bananadroid/releases/download/" + str(datetime.date.today()) + "/" + ROM_ZIP_NAME
             else: 
                 # GH releases will not work over 2GB, so just use SF
-                github_download_link = "https://sourceforge.net/projects/pixelos-releases/files/thirteen/" + device + "/" + ROM_ZIP_NAME
+                github_download_link = "https://sourceforge.net/projects/bananadroid/files/" + device + "/" + ROM_ZIP_NAME
             mjson = open(cur_dir + "/releases/" + file, "r").read().replace("GITHUB_RELEASES_PLACEHOLDER", github_download_link)
             open(cur_dir + "/releases/" + file, "w+").write(mjson)
 
@@ -113,15 +113,15 @@ for tag in new_tags:
             if file.endswith(".json"):
                 device = file.replace(".json", "")
                 mjson = open(cur_dir + "/releases/" + file, "r").read().replace("URL_PLACEHOLDER",
-                                                                               "https://sourceforge.net/projects/pixelos-releases/files/thirteen/" + device + "/" + ROM_ZIP_NAME)
+                                                                               "https://sourceforge.net/projects/bananadroid/files/" + device + "/" + ROM_ZIP_NAME)
                 open(cur_dir + "/releases/" + file, "w+").write(mjson)
 
     else:
         for file in os.listdir(cur_dir + "/releases/"):
             if file.endswith(".json"):
                 device = file.replace(".json", "")
-                updaterInfo = json.loads(requests.get("https://raw.githubusercontent.com/PixelOS-AOSP/official_devices/" + android_version_text  + "/API/updater/" + device + ".json").content)
-                updaterInfo ["github_releases_url"] = "https://github.com/PixelOS-Releases/releases-public/releases/download/" + str(datetime.date.today()) + "/" + ROM_ZIP_NAME
+                updaterInfo = json.loads(requests.get("https://raw.githubusercontent.com/travarilo/ota_test/" + android_version_text  + "/API/updater/" + device + ".json").content)
+                updaterInfo ["github_releases_url"] = "https://github.com/bananadroid/releases/download/" + str(datetime.date.today()) + "/" + ROM_ZIP_NAME
                 open(cur_dir + "/releases/" + file, "w+").write(json.dumps(updaterInfo, indent=4), )
 
 
@@ -130,13 +130,13 @@ for tag in new_tags:
 
 
     push_commands = [
-        "git config --global user.name \"PixelOS-Bot\"",
-        "git config --global user.email \"pixelos.pixelish@gmail.com\"",
+        "git config --global user.name \"travarilo\"",
+        "git config --global user.email \"travarilo@gmail.com\"",
         "git fetch",
         "git pull",
         "git add .",
         "git commit -m \"official_devices: update tags [no ci]\"",
-        "git push origin thirteen",
+        "git push origin 13",
     ]
 
     for command in push_commands:
@@ -150,10 +150,10 @@ for tag in new_tags:
         for file in os.listdir(cur_dir + "/releases"):
             if file.endswith(".img"):
                 os.system("sshpass -p " + SF_PASS + " scp -o \"StrictHostKeyChecking no\" " + cur_dir +
-                  "/releases/" + file + " pixelos@frs.sourceforge.net:/home/frs/project/pixelos-releases/thirteen/" + device + "/recovery")
+                  "/releases/" + file + " travarilo@frs.sourceforge.net:/home/frs/project/bananadroid/" + device + "/recovery")
 
         os.system("sshpass -p " + SF_PASS + " scp -o \"StrictHostKeyChecking no\" " + cur_dir +
-                  "/releases/*.zip pixelos@frs.sourceforge.net:/home/frs/project/pixelos-releases/thirteen/" + device + "")
+                  "/releases/*.zip travarilo@frs.sourceforge.net:/home/frs/project/bananadroid/" + device + "")
     except:
         print("Something went wrong")
 

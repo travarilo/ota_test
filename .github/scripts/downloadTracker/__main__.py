@@ -4,8 +4,8 @@ import os
 import json
 from datetime import date
 
-ORG="pixelos-releases"
-REPO_NAME="releases-public"
+ORG="bananadroid"
+REPO_NAME="releases"
 DIR_PATH="API/downloads"
 
 API_ENDPOINT = f"https://api.github.com/repos/{ORG}/{REPO_NAME}/releases"
@@ -61,7 +61,7 @@ def sf_download_count(path: str = None):
 
 def sf_per_device_count(device_list : list[str]) -> dict:
     _sf_json = {}
-    android_versions = ["thirteen", "twelve"]
+    android_versions = ["13"]
     for android in android_versions:
         _android_tmp = {}
         for device in device_list:

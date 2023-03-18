@@ -31,17 +31,17 @@ from telegram.ext import *
 BOT_API = os.environ.get("BOT_API")  # Telegram Bot API Token
 # GitHub PAT (for accessing private repos and APIs)
 TOKEN = os.environ.get("TOKEN")
-GITHUB_API_USER = "geek0609"  # GitHub username of owner of the above token
+GITHUB_API_USER = "travarilo"  # GitHub username of owner of the above token
 # ID of channel where it needs to post [Requires admin with enough permissions]
-CHAT_ID = "-1001551285228"
+CHAT_ID = "-1001940393750"
 # Direct link to banner
-banner = "https://raw.githubusercontent.com/PixelOS-AOSP/official_devices/thirteen/banners/latest.png"
+banner = "https://raw.githubusercontent.com/travarilo/banners/main/march.png"
 json_dir = "./API/devices/"  # Directory where it should look for JSONs
 timeout = 1  # Time out before sending consecutive messages
 LOG_DIR = ".github/scripts/UpdatePoster/log.txt"
-WEBSITE_DOWNLOAD = "https://pixelos.net/download/"
+WEBSITE_DOWNLOAD = "https://bananadroid.com/download/"
 # Tags which needs to appear at end of the post
-FOOTER_TAGS = "#TeamPixel #PixelOS"
+FOOTER_TAGS = "#StayHealthy #BananaDroid"
 
 # UniqueID can be any parameter contained in the device.json file which is unique to one build which the\
 # maintainer must change every update/build.
@@ -112,7 +112,7 @@ def get_updated_device():
 
 # To make the post
 def post_maker(device_info, name):
-    message = "<b>PixelOS for " + device_info["device_display_name"] + " (" + \
+    message = "<b>BananaDroid for " + device_info["device_display_name"] + " (" + \
               device_info["device_display_codename"] + \
         ")\n\nVersion:</b> " + device_info["version"]
 
@@ -138,7 +138,7 @@ def post_maker(device_info, name):
         loop -= 1
 
     release_info = json.loads(requests.get(
-        "https://api.github.com/repos/PixelOS-Releases/releases/releases/tags/" +
+        "https://api.github.com/repos/bananadroid/releases/releases/tags/" +
         device_info[UniqueID],
         auth=(GITHUB_API_USER, TOKEN)).content)  # information about the release, taken from Private Releases Repository
 
@@ -154,7 +154,7 @@ def post_maker(device_info, name):
         if asset["name"] == "boot.img" or asset["name"] == "recovery.img":
             recovery_file_size = float(asset["size"]) * 0.00000095367432
             RECOVERY_NAME = asset["name"]
-        elif asset["name"].__contains__("PixelOS.part"):
+        elif asset["name"].__contains__("BananaDroid.part"):
             rom_file_size = rom_file_size + float(asset["size"]) * 0.00000000093132
         elif asset["name"].endswith(".zip"):
             ROM_NAME = asset["name"]
